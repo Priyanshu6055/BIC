@@ -15,6 +15,16 @@ class InquiryController extends Controller
     public function index(Request $request): View
     {
         $inquiries = Inquiry::query()
+            ->when($request->filled('search'), function ($q) use ($request) {
+                $search = $request->string('search');
+                $q->where(function ($query) use ($search) {
+                    $query->where('reference', 'like', "%{$search}%")
+                          ->orWhere('name', 'like', "%{$search}%")
+                          ->orWhere('email', 'like', "%{$search}%")
+                          ->orWhere('company', 'like', "%{$search}%")
+                          ->orWhere('phone', 'like', "%{$search}%");
+                });
+            })
             ->when($request->filled('type'), fn ($q) => $q->where('type', $request->string('type')))
             ->when($request->filled('status'), fn ($q) => $q->where('status', $request->string('status')))
             ->latest()->paginate(25)->withQueryString();

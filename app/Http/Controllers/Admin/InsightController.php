@@ -13,9 +13,20 @@ use Illuminate\View\View;
 
 class InsightController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
-        return view('admin.insights.index', ['insights' => Insight::latest()->paginate(25)]);
+        $insights = Insight::query()
+            ->when($request->filled('search'), function ($q) use ($request) {
+                $search = $request->string('search');
+                $q->where(function ($query) use ($search) {
+                    $query->where('title', 'like', "%{$search}%")
+                          ->orWhere('author', 'like', "%{$search}%")
+                          ->orWhere('category', 'like', "%{$search}%");
+                });
+            })
+            ->when($request->filled('status'), fn ($q) => $q->where('status', $request->string('status')))
+            ->latest()->paginate(25)->withQueryString();
+        return view('admin.insights.index', compact('insights'));
     }
 
     public function create(): View
