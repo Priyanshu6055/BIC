@@ -14,6 +14,7 @@ Route::get('/apply/{type}', [InquiryController::class, 'create'])
     ->whereIn('type', ['startup', 'msme', 'investor', 'ma', 'contact'])->name('inquiries.create');
 Route::post('/apply/{type}', [InquiryController::class, 'store'])
     ->whereIn('type', ['startup', 'msme', 'investor', 'ma', 'contact'])->middleware('throttle:10,1')->name('inquiries.store');
+Route::get('/contact', fn () => redirect()->route('inquiries.create', 'contact'))->name('contact');
 
 Route::get('/insights', [InsightController::class, 'index'])->name('insights.index');
 Route::get('/insights/{slug}', [InsightController::class, 'show'])->name('insights.show');
@@ -25,10 +26,12 @@ Route::middleware('guest')->group(function (): void {
 
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function (): void {
     Route::post('/logout', [AdminAuthController::class, 'destroy'])->name('logout');
+    Route::get('/inquiries/export', [AdminInquiryController::class, 'export'])->name('inquiries.export');
     Route::get('/inquiries', [AdminInquiryController::class, 'index'])->name('inquiries.index');
     Route::get('/inquiries/{inquiry}', [AdminInquiryController::class, 'show'])->name('inquiries.show');
     Route::patch('/inquiries/{inquiry}', [AdminInquiryController::class, 'update'])->name('inquiries.update');
     Route::get('/inquiries/{inquiry}/document', [AdminInquiryController::class, 'download'])->name('inquiries.document');
+    Route::get('/insights/export', [AdminInsightController::class, 'export'])->name('insights.export');
     Route::resource('insights', AdminInsightController::class)->except(['show', 'destroy']);
 });
 

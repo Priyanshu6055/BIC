@@ -9,7 +9,7 @@ $factors = [
 ?>
 <section class="motion-story reveal" id="why">
     <div class="motion-stage">
-        <div class="motion-copy"><div class="eyebrow">Why BIC</div><h2>Capital is the input.<br>The +1 is the advantage.</h2><p>No two businesses need the same investor. BIC identifies the strategic contribution that matters for that transaction and evaluates the relationship accordingly.</p></div>
+        <div class="motion-copy"><div class="eyebrow">Why BIC</div><h2>Capital is the input.<br>The +1 is the advantage.</h2><p>No two businesses need the same investor. BIC identifies the strategic contribution that matters most for each transaction and evaluates the relationship accordingly.</p></div>
         <div class="factor-stage" aria-label="Capital plus one factors">
             <?php $__currentLoopData = $factors; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as [$title,$copy]): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <div class="factor-card" data-factor="<?php echo e($loop->index); ?>"><small>Capital +1 · <?php echo e(str_pad((string)$loop->iteration, 2, '0', STR_PAD_LEFT)); ?></small><h3><?php echo e($title); ?></h3><p><?php echo e($copy); ?></p></div>

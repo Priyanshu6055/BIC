@@ -8,17 +8,25 @@
 <main class="inquiry-page" id="main">
     <div class="inquiry-container">
         <a class="inquiry-wordmark" href="{{ route('home') }}" aria-label="Bridge India Capital home"><span>BIC</span><small>Bridge India Capital</small></a>
+
         <div class="inquiry-intro">
             <p class="eyebrow">Initial inquiry · {{ $type === 'ma' ? 'M&A' : strtoupper($type) }}</p>
             <h1>{{ $config['title'] }}</h1><p>{{ $config['purpose'] }}</p>
             <p class="inquiry-privacy-note">Please provide only the requested initial information. Do not submit identity documents, bank statements, full financial statements, complete cap tables or confidential customer lists.</p>
         </div>
+
         @if(session('submission'))
-            <div class="inquiry-result"><div class="state-panel state-panel--success"><h2>Inquiry received</h2><p>{{ session('submission.message') }}</p><p><strong>Reference:</strong> <span class="reference-code">{{ session('submission.reference') }}</span></p></div></div>
+            <div class="inquiry-result">
+                <div class="state-panel state-panel--success">
+                    <h2>Inquiry received</h2>
+                    <p>{{ session('submission.message') }}</p>
+                    <p><strong>Reference:</strong> <span class="reference-code">{{ session('submission.reference') }}</span></p>
+                    <p style="margin-top: 24px;"><a class="button button--primary" href="{{ route('home') }}">Back to Home</a></p>
+                </div>
+            </div>
         @else
         <form class="inquiry-form" action="{{ route('inquiries.store', $type) }}" method="post" enctype="multipart/form-data" novalidate data-inquiry-form>
             @csrf
-            <div class="inquiry-mode" data-mode="live" role="status"><strong>Service status</strong><span>Secure production inquiry service. Required fields are marked with an asterisk.</span></div>
             <nav class="form-progress" aria-label="Form progress"><ol>
                 @foreach($config['steps'] as $step)
                 <li data-current="{{ $loop->first ? 'true' : 'false' }}"><button type="button" data-step-button="{{ $loop->index }}" @disabled(!$loop->first) aria-current="{{ $loop->first ? 'step' : 'false' }}"><span>{{ $loop->iteration }}</span><span class="form-progress-label">{{ $step['title'] }}</span></button></li>
@@ -28,7 +36,7 @@
             <div class="submission-state" role="status" hidden></div>
             @foreach($config['steps'] as $step)
             <fieldset class="inquiry-step" data-step="{{ $loop->index }}" @if(!$loop->first) hidden @endif>
-                <legend>{{ $step['title'] }}</legend><p class="inquiry-step-description">{{ $step['description'] }}</p>
+                <legend>{{ $step['title'] }}</legend>
                 <div class="inquiry-fields">
                 @foreach($step['fields'] as $field)
                     @php($id = 'inquiry-'.$field['name'])
@@ -54,11 +62,15 @@
                 </div>
             </fieldset>
             @endforeach
-            <div class="inquiry-actions"><button class="button button--quiet" type="button" data-back hidden>Back</button><button class="button button--primary" type="button" data-next>Continue</button><button class="button button--primary" type="submit" data-submit hidden>Submit inquiry</button></div>
+            <div class="inquiry-actions">
+                <a class="button button--quiet" href="{{ route('home') }}" data-home-back>Back</a>
+                <button class="button button--quiet" type="button" data-back hidden>Back</button>
+                <button class="button button--primary" type="button" data-next>Continue</button>
+                <button class="button button--primary" type="submit" data-submit hidden>Submit inquiry</button>
+            </div>
             <div class="honeypot" aria-hidden="true"><label for="companyFax">Company fax</label><input id="companyFax" name="companyFax" tabindex="-1" autocomplete="off"></div>
         </form>
         @endif
     </div>
 </main>
 @endsection
-

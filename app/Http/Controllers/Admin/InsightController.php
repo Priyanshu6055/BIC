@@ -10,23 +10,80 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class InsightController extends Controller
 {
     public function index(Request $request): View
     {
-        $insights = Insight::query()
-            ->when($request->filled('search'), function ($q) use ($request) {
-                $search = $request->string('search');
-                $q->where(function ($query) use ($search) {
-                    $query->where('title', 'like', "%{$search}%")
-                          ->orWhere('author', 'like', "%{$search}%")
-                          ->orWhere('category', 'like', "%{$search}%");
-                });
-            })
-            ->when($request->filled('status'), fn ($q) => $q->where('status', $request->string('status')))
-            ->latest()->paginate(25)->withQueryString();
-        return view('admin.insights.index', compact('insights'));
+        $insights = $this->filteredQuery($request)
+            ->latest()
+            ->paginate(25)
+            ->withQueryString();
+
+        $categories = Insight::whereNotNull('category')
+            ->where('category', '!=', '')
+            ->distinct()
+            ->pluck('category')
+            ->sort()
+            ->values();
+
+        return view('admin.insights.index', compact('insights', 'categories'));
+    }
+
+    public function export(Request $request): StreamedResponse
+    {
+        $format = strtolower($request->input('format', 'csv'));
+        $query = $this->filteredQuery($request)->latest();
+        $filename = 'bic-insights-' . now()->format('Y-m-d-His');
+
+        if ($format === 'json') {
+            return response()->streamDownload(function () use ($query) {
+                echo json_encode($query->get(), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+            }, "{$filename}.json", ['Content-Type' => 'application/json']);
+        }
+
+        // Default Excel-compatible CSV export
+        return response()->streamDownload(function () use ($query) {
+            $handle = fopen('php://output', 'w');
+            // Write UTF-8 BOM for Microsoft Excel
+            fprintf($handle, chr(0xEF).chr(0xBB).chr(0xBF));
+
+            fputcsv($handle, [
+                'ID',
+                'Title',
+                'Category',
+                'Author',
+                'Status',
+                'Featured',
+                'Published Date',
+                'Slug',
+                'SEO Meta Title',
+                'Summary Excerpt',
+            ]);
+
+            $query->chunk(200, function ($insights) use ($handle) {
+                foreach ($insights as $insight) {
+                    fputcsv($handle, [
+                        $insight->id,
+                        $insight->title,
+                        $insight->category ?: '—',
+                        $insight->author ?: '—',
+                        ucfirst($insight->status),
+                        $insight->featured ? 'Yes' : 'No',
+                        $insight->published_at?->format('Y-m-d H:i') ?: '—',
+                        $insight->slug,
+                        $insight->seo_title ?: '—',
+                        $insight->summary,
+                    ]);
+                }
+            });
+
+            fclose($handle);
+        }, "{$filename}.csv", [
+            'Content-Type' => 'text/csv; charset=UTF-8',
+            'Content-Disposition' => "attachment; filename=\"{$filename}.csv\"",
+        ]);
     }
 
     public function create(): View
@@ -49,6 +106,28 @@ class InsightController extends Controller
     {
         $insight->update($this->validated($request, $insight));
         return back()->with('success', 'Insight updated.');
+    }
+
+    private function filteredQuery(Request $request)
+    {
+        return Insight::query()
+            ->when($request->filled('search'), function ($q) use ($request) {
+                $search = trim((string) $request->input('search'));
+                $q->where(function ($query) use ($search) {
+                    $query->where('title', 'like', "%{$search}%")
+                          ->orWhere('author', 'like', "%{$search}%")
+                          ->orWhere('category', 'like', "%{$search}%")
+                          ->orWhere('summary', 'like', "%{$search}%");
+                });
+            })
+            ->when($request->filled('category'), function ($q) use ($request) {
+                $category = trim((string) $request->input('category'));
+                $q->where('category', $category);
+            })
+            ->when($request->filled('status'), function ($q) use ($request) {
+                $status = trim((string) $request->input('status'));
+                $q->where('status', $status);
+            });
     }
 
     private function validated(Request $request, ?Insight $insight = null): array

@@ -5,6 +5,7 @@ for (const form of forms) {
     const progress = [...form.querySelectorAll('.form-progress li')];
     const stepButtons = [...form.querySelectorAll('[data-step-button]')];
     const back = form.querySelector('[data-back]');
+    const homeBack = form.querySelector('[data-home-back]');
     const next = form.querySelector('[data-next]');
     const submit = form.querySelector('[data-submit]');
     const summary = form.querySelector('.form-error-summary');
@@ -24,6 +25,7 @@ for (const form of forms) {
             else button.removeAttribute('aria-current');
         });
         back.hidden = current === 0;
+        if (homeBack) homeBack.hidden = current !== 0;
         next.hidden = current === steps.length - 1;
         submit.hidden = current !== steps.length - 1;
         summary.hidden = true;

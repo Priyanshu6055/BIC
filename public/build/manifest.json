@@ -128,7 +128,7 @@
     "src": "node_modules/@fontsource/ibm-plex-mono/files/ibm-plex-mono-vietnamese-500-normal.woff2"
   },
   "resources/css/app.css": {
-    "file": "assets/app-C4dc969c.css",
+    "file": "assets/app-1dz7uV6P.css",
     "src": "resources/css/app.css",
     "isEntry": true,
     "name": "app",
@@ -137,7 +137,7 @@
     ]
   },
   "resources/js/app.js": {
-    "file": "assets/app-CQpf31CQ.js",
+    "file": "assets/app-ghI-4b64.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true

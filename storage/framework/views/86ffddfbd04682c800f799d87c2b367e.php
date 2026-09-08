@@ -1,3 +1,6 @@
+<?php $__env->startSection('title', 'Bridge India Capital — Strategic Capital Infrastructure | Startups, MSMEs & M&A'); ?>
+<?php $__env->startSection('description', 'Bridge India Capital connects traction-led startups and established MSMEs with HNIs, UHNIs, family offices, corporates and strategic investors.'); ?>
+
 <?php $__env->startSection('content'); ?>
 <div class="approved-site">
     <a class="skip" href="#main">Skip to content</a>

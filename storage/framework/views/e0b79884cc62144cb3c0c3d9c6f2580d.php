@@ -4,9 +4,9 @@
         <div class="eyebrow">The advisory layer</div><h2>The best transaction work often begins before the transaction.</h2>
         <p>Capital becomes easier to evaluate when the business is prepared. BIC can work with founders and promoters before a formal raise or M&amp;A process to clarify the story, structure the opportunity and improve readiness.</p>
         <div class="advisory-points">
-            <div><strong>MSME readiness:</strong> clarify financials, structure, governance and the equity story before approaching investors.</div>
-            <div><strong>Startup pilots:</strong> focused engagements that build understanding, evidence and readiness before a formal capital conversation.</div>
-            <div><strong>Transaction preparation:</strong> define what the business needs, why it needs it and which counterparties are genuinely relevant.</div>
+            <div><strong>MSME readiness:</strong> Clarify financials, structure, governance and the equity story before approaching investors.</div>
+            <div><strong>Startup pilots:</strong> Focused engagements that build understanding, evidence and readiness before a formal capital conversation.</div>
+            <div><strong>Transaction preparation:</strong> Define what the business needs, why it needs it and which counterparties are genuinely relevant.</div>
         </div>
     </div>
 </section>

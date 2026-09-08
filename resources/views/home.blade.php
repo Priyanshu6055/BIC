@@ -1,5 +1,8 @@
 @extends('layouts.app')
 
+@section('title', 'Bridge India Capital — Strategic Capital Infrastructure | Startups, MSMEs & M&A')
+@section('description', 'Bridge India Capital connects traction-led startups and established MSMEs with HNIs, UHNIs, family offices, corporates and strategic investors.')
+
 @section('content')
 <div class="approved-site">
     <a class="skip" href="#main">Skip to content</a>
