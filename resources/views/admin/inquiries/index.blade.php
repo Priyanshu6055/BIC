@@ -9,14 +9,19 @@
         </div>
         <div class="admin-header-actions">
             <div class="admin-export-group">
-                <a href="{{ route('admin.inquiries.export', array_merge(request()->query(), ['format' => 'csv'])) }}" class="admin-btn-export" title="Download filtered inquiries to Excel (.csv)">
+                <a href="{{ route('admin.inquiries.export', ['scope' => 'all', 'format' => 'csv']) }}" class="admin-btn-export" title="Download all records from the full database table to Excel (.csv)">
                     <svg class="admin-btn-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
                         <polyline points="7 10 12 15 17 10"></polyline>
                         <line x1="12" y1="15" x2="12" y2="3"></line>
                     </svg>
-                    <span>Download Excel</span>
+                    <span>Download Full Table (Excel)</span>
                 </a>
+                @if(request()->anyFilled(['search', 'type', 'status']))
+                <a href="{{ route('admin.inquiries.export', array_merge(request()->query(), ['filtered' => 1, 'format' => 'csv'])) }}" class="admin-btn-export-subtle" title="Download only the currently filtered records">
+                    <span>Export Filtered</span>
+                </a>
+                @endif
                 <a href="{{ route('admin.inquiries.export', array_merge(request()->query(), ['format' => 'json'])) }}" class="admin-btn-export-subtle" title="Download inquiries in JSON format">
                     <svg class="admin-btn-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <polyline points="16 18 22 12 16 6"></polyline>

@@ -1,0 +1,12 @@
+<section class="section market-section reveal">
+    <div class="market-grid">
+        <div><div class="eyebrow">Why BIC exists</div><h2 class="big">India does not only have a capital gap. It has a matching gap.</h2><p class="copy">Many traction-led startups struggle to reach the right growth capital. Many established MSMEs remain dependent on debt because no structured equity route exists at scale. Investors face the opposite problem: access to credible, prepared and relevant opportunities. BIC is built between these gaps.</p></div>
+        <div class="market-stats">
+            <div class="stat"><span>Startup progression</span><b>15.4%</b><p>of the referenced 2022 seed cohort reached Series A within two years.</p></div>
+            <div class="stat"><span>MSME scale</span><b>6.2 Cr</b><p>Udyam-registered MSMEs operating in India, against a very limited organized equity route.</p></div>
+            <div class="stat"><span>Equity gap</span><b>₹31L Cr</b><p>Estimated MSME equity demand gap across Indian enterprises.</p></div>
+        </div>
+    </div>
+</section>
+
+<?php /**PATH C:\Users\DESIGN\Downloads\BIC_Laravel_Production_Source\resources\views/components/home/evidence.blade.php ENDPATH**/ ?>

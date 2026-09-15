@@ -1,13 +1,11 @@
-@extends('layouts.app')
+<?php $__env->startSection('robots', 'noindex,nofollow'); ?>
 
-@section('robots', 'noindex,nofollow')
-
-@section('content')
-<div class="admin-shell {{ Auth::check() ? 'admin-has-sidebar' : 'admin-guest-shell' }}" id="adminShell">
-    @auth
+<?php $__env->startSection('content'); ?>
+<div class="admin-shell <?php echo e(Auth::check() ? 'admin-has-sidebar' : 'admin-guest-shell'); ?>" id="adminShell">
+    <?php if(auth()->guard()->check()): ?>
     <aside class="admin-sidebar" id="adminSidebar">
         <div class="admin-sidebar-header">
-            <a href="{{ route('admin.inquiries.index') }}" class="admin-sidebar-brand">
+            <a href="<?php echo e(route('admin.inquiries.index')); ?>" class="admin-sidebar-brand">
                 <div class="admin-brand-mark">BIC</div>
                 <div class="admin-brand-text">
                     <strong>Bridge India</strong>
@@ -23,29 +21,29 @@
         </div>
 
         <div class="admin-sidebar-user">
-            <div class="admin-user-avatar">{{ strtoupper(substr(auth()->user()->name ?? 'A', 0, 1)) }}</div>
+            <div class="admin-user-avatar"><?php echo e(strtoupper(substr(auth()->user()->name ?? 'A', 0, 1))); ?></div>
             <div class="admin-user-info">
-                <span class="admin-user-name">{{ auth()->user()->name ?? 'Admin User' }}</span>
-                <span class="admin-user-email">{{ auth()->user()->email ?? '' }}</span>
+                <span class="admin-user-name"><?php echo e(auth()->user()->name ?? 'Admin User'); ?></span>
+                <span class="admin-user-email"><?php echo e(auth()->user()->email ?? ''); ?></span>
             </div>
         </div>
 
         <nav class="admin-sidebar-nav">
             <span class="admin-nav-heading">Main Navigation</span>
-            <a href="{{ route('admin.inquiries.index') }}" class="{{ request()->routeIs('admin.inquiries.*') && request('type') !== 'contact' ? 'active' : '' }}">
+            <a href="<?php echo e(route('admin.inquiries.index')); ?>" class="<?php echo e(request()->routeIs('admin.inquiries.*') && request('type') !== 'contact' ? 'active' : ''); ?>">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
                     <polyline points="22,6 12,13 2,6"></polyline>
                 </svg>
                 <span>All Inquiries</span>
             </a>
-            <a href="{{ route('admin.inquiries.index', ['type' => 'contact']) }}" class="{{ request()->routeIs('admin.inquiries.*') && request('type') === 'contact' ? 'active' : '' }}">
+            <a href="<?php echo e(route('admin.inquiries.index', ['type' => 'contact'])); ?>" class="<?php echo e(request()->routeIs('admin.inquiries.*') && request('type') === 'contact' ? 'active' : ''); ?>">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                 </svg>
                 <span>Contact Messages</span>
             </a>
-            <a href="{{ route('admin.insights.index') }}" class="{{ request()->routeIs('admin.insights.*') ? 'active' : '' }}">
+            <a href="<?php echo e(route('admin.insights.index')); ?>" class="<?php echo e(request()->routeIs('admin.insights.*') ? 'active' : ''); ?>">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
                     <polyline points="14 2 14 8 20 8"></polyline>
@@ -57,7 +55,7 @@
             </a>
 
             <span class="admin-nav-heading" style="margin-top: 24px;">Settings & Security</span>
-            <a href="{{ route('admin.password.edit') }}" class="{{ request()->routeIs('admin.password.*') ? 'active' : '' }}">
+            <a href="<?php echo e(route('admin.password.edit')); ?>" class="<?php echo e(request()->routeIs('admin.password.*') ? 'active' : ''); ?>">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
                     <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
@@ -66,7 +64,7 @@
             </a>
 
             <span class="admin-nav-heading" style="margin-top: 20px;">Quick Links</span>
-            <a href="{{ route('home') }}" target="_blank" rel="noopener noreferrer">
+            <a href="<?php echo e(route('home')); ?>" target="_blank" rel="noopener noreferrer">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
                     <polyline points="15 3 21 3 21 9"></polyline>
@@ -75,8 +73,8 @@
                 <span>View Public Site</span>
             </a>
 
-            <form action="{{ route('admin.logout') }}" method="post" class="admin-logout-form">
-                @csrf
+            <form action="<?php echo e(route('admin.logout')); ?>" method="post" class="admin-logout-form">
+                <?php echo csrf_field(); ?>
                 <button type="submit">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
@@ -90,10 +88,10 @@
     </aside>
 
     <div class="admin-backdrop" id="adminBackdrop"></div>
-    @endauth
+    <?php endif; ?>
 
     <main class="admin-main">
-        @auth
+        <?php if(auth()->guard()->check()): ?>
         <header class="admin-mobile-topbar">
             <button type="button" class="admin-menu-toggle" id="adminSidebarToggle" aria-label="Open navigation menu">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -107,26 +105,26 @@
                 <span>Admin</span>
             </div>
             <div class="admin-mobile-user">
-                <span class="admin-user-pill">{{ auth()->user()->name ?? 'Admin' }}</span>
+                <span class="admin-user-pill"><?php echo e(auth()->user()->name ?? 'Admin'); ?></span>
             </div>
         </header>
-        @endauth
+        <?php endif; ?>
 
-        @if(session('success'))
+        <?php if(session('success')): ?>
             <div class="admin-notice">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                     <polyline points="22 4 12 14.01 9 11.01"></polyline>
                 </svg>
-                <span>{{ session('success') }}</span>
+                <span><?php echo e(session('success')); ?></span>
             </div>
-        @endif 
+        <?php endif; ?> 
 
-        @yield('admin-content')
+        <?php echo $__env->yieldContent('admin-content'); ?>
     </main>
 </div>
 
-@auth
+<?php if(auth()->guard()->check()): ?>
 <script>
     (function() {
         const sidebar = document.getElementById('adminSidebar');
@@ -157,5 +155,7 @@
         });
     })();
 </script>
-@endauth
-@endsection
+<?php endif; ?>
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\DESIGN\Downloads\BIC_Laravel_Production_Source\resources\views/layouts/admin.blade.php ENDPATH**/ ?>

@@ -17,11 +17,15 @@
 
         @if(session('submission'))
             <div class="inquiry-result">
-                <div class="state-panel state-panel--success">
-                    <h2>Inquiry received</h2>
-                    <p>{{ session('submission.message') }}</p>
-                    <p><strong>Reference:</strong> <span class="reference-code">{{ session('submission.reference') }}</span></p>
-                    <p style="margin-top: 24px;"><a class="button button--primary" href="{{ route('home') }}">Back to Home</a></p>
+                <div class="state-panel state-panel--success" style="text-align: center; padding: 48px 32px;">
+                    <div style="width: 56px; height: 56px; border-radius: 50%; background: rgba(34, 197, 94, 0.12); color: #16a34a; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                    </div>
+                    <h2 style="font-size: 26px; font-family: Georgia, serif; color: #1e293b; margin: 0 0 24px;">Your response has been submitted successfully.</h2>
+                    <p><a class="button button--primary" href="{{ route('home') }}">Back to Home</a></p>
                 </div>
             </div>
         @else

@@ -1,0 +1,193 @@
+/* Form Submission Response Modal */
+.feedback-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(15, 23, 42, 0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+.feedback-modal-backdrop.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.feedback-modal {
+  background: #ffffff;
+  color: #1e293b;
+  width: 100%;
+  max-width: 520px;
+  border-radius: 16px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.06);
+  padding: 36px 32px 28px;
+  position: relative;
+  text-align: center;
+  transform: scale(0.94) translateY(12px);
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
+}
+
+.feedback-modal-backdrop.is-open .feedback-modal {
+  transform: scale(1) translateY(0);
+}
+
+.feedback-modal-icon-wrap {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.feedback-modal--success .feedback-modal-icon-wrap {
+  background: rgba(34, 197, 94, 0.12);
+  color: #16a34a;
+  box-shadow: 0 0 0 8px rgba(34, 197, 94, 0.06);
+}
+
+.feedback-modal--error .feedback-modal-icon-wrap {
+  background: rgba(239, 68, 68, 0.12);
+  color: #dc2626;
+  box-shadow: 0 0 0 8px rgba(239, 68, 68, 0.06);
+}
+
+.feedback-modal-title {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 1.25;
+  color: #0f172a;
+  margin: 0 0 12px;
+}
+
+.feedback-modal-message {
+  font-size: 15px;
+  line-height: 1.65;
+  color: #475569;
+  margin: 0 0 20px;
+}
+
+.feedback-modal-meta {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin: 0 0 24px;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.feedback-modal-meta-label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #64748b;
+}
+
+.feedback-modal-reference-code {
+  font-family: var(--font-mono, monospace);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #0f172a;
+}
+
+.feedback-modal-copy-btn {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  color: #334155;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.feedback-modal-copy-btn:hover {
+  border-color: #94a3b8;
+  background: #f1f5f9;
+}
+
+.feedback-modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.feedback-modal-btn {
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  min-width: 120px;
+  box-sizing: border-box;
+}
+
+.feedback-modal-btn--primary {
+  background: #5b1522;
+  color: #ffffff;
+  border: 1px solid #5b1522;
+}
+
+.feedback-modal-btn--primary:hover {
+  background: #460f1a;
+  color: #ffffff;
+}
+
+.feedback-modal-btn--secondary {
+  background: #f1f5f9;
+  color: #334155;
+  border: 1px solid #cbd5e1;
+}
+
+.feedback-modal-btn--secondary:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+.feedback-modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: #94a3b8;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.feedback-modal-close:hover {
+  background: #f1f5f9;
+  color: #334155;
+}

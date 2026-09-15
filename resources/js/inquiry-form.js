@@ -1,3 +1,5 @@
+import { showFeedbackModal } from './modal-feedback';
+
 const forms = document.querySelectorAll('[data-inquiry-form]');
 
 for (const form of forms) {
@@ -79,9 +81,11 @@ for (const form of forms) {
     form.addEventListener('input', (event) => clearError(event.target));
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
-        if (!validateStep()) return;
+        if (!validateStep()) {
+            return;
+        }
         submit.disabled = true;
-        submit.textContent = 'Checking inquiry…';
+        submit.textContent = 'Processing inquiry…';
         state.hidden = true;
         try {
             const response = await fetch(form.action, {method: 'POST', body: new FormData(form), headers: {'Accept': 'application/json'}});
@@ -92,13 +96,29 @@ for (const form of forms) {
                 const stepIndex = first ? steps.findIndex((step) => step.querySelector(`[name="${CSS.escape(first)}"]`)) : current;
                 if (stepIndex >= 0) { furthest = Math.max(furthest, stepIndex); show(stepIndex); }
                 Object.entries(errors).forEach(([name, messages]) => setError(name, messages[0]));
-                summary.hidden = false; summary.focus();
+                summary.hidden = false;
+                summary.focus();
             } else if (response.ok) {
-                form.innerHTML = `<div class="inquiry-result"><div class="state-panel state-panel--success"><h2>Inquiry received</h2><p>${data.message}</p><p><strong>Reference:</strong> <span class="reference-code">${data.reference}</span></p></div></div>`;
-            } else throw new Error('Submission failed');
+                form.innerHTML = `
+                    <div class="inquiry-result">
+                        <div class="state-panel state-panel--success" style="text-align: center; padding: 48px 32px;">
+                            <div style="width: 56px; height: 56px; border-radius: 50%; background: rgba(34, 197, 94, 0.12); color: #16a34a; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 20px;">
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                </svg>
+                            </div>
+                            <h2 style="font-size: 26px; font-family: Georgia, serif; color: #1e293b; margin: 0 0 24px;">Your response has been submitted successfully.</h2>
+                            <p><a class="button button--primary" href="/">Back to Home</a></p>
+                        </div>
+                    </div>
+                `;
+            } else {
+                throw new Error('Submission failed');
+            }
         } catch {
             state.className = 'submission-state state-panel state-panel--error';
-            state.innerHTML = '<h2>Submission not accepted</h2><p>The inquiry service could not be reached. Your entered information remains in this form.</p>';
+            state.innerHTML = '<h2>Submission could not be completed</h2><p>We encountered a connection issue. Your entered details remain in the form. Please try submitting again, or email us directly at <a href="mailto:connect@bridgrindia.com" style="color: #5b1522; font-weight: 600; text-decoration: underline;">connect@bridgrindia.com</a>.</p>';
             state.hidden = false;
         } finally {
             if (submit.isConnected) { submit.disabled = false; submit.textContent = 'Submit inquiry'; }

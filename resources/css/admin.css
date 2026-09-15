@@ -271,7 +271,6 @@ div.admin-shell {
   border: none;
   background: transparent;
   cursor: pointer;
-  transition: all 0.2s ease;
   box-sizing: border-box;
 }
 
@@ -281,15 +280,16 @@ div.admin-shell {
   opacity: 0.85;
 }
 
+/* Hover effect removed as requested for Main Navigation buttons */
 .admin-sidebar-nav a:hover,
 .admin-sidebar-nav button:hover {
-  background: var(--admin-sidebar-hover);
-  color: #ffffff;
+  background: transparent;
+  color: #f1f5f9;
 }
 
 .admin-sidebar-nav a:hover svg,
 .admin-sidebar-nav button:hover svg {
-  opacity: 1;
+  opacity: 0.85;
 }
 
 .admin-sidebar-nav a.active {

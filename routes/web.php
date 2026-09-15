@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\InquiryController as AdminInquiryController;
 use App\Http\Controllers\Admin\InsightController as AdminInsightController;
+use App\Http\Controllers\Admin\PasswordController as AdminPasswordController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InquiryController;
 use App\Http\Controllers\InsightController;
@@ -33,6 +34,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::get('/inquiries/{inquiry}/document', [AdminInquiryController::class, 'download'])->name('inquiries.document');
     Route::get('/insights/export', [AdminInsightController::class, 'export'])->name('insights.export');
     Route::resource('insights', AdminInsightController::class)->except(['show', 'destroy']);
+    Route::get('/password', [AdminPasswordController::class, 'edit'])->name('password.edit');
+    Route::put('/password', [AdminPasswordController::class, 'update'])->name('password.update');
 });
 
 Route::get('/robots.txt', fn () => response("User-agent: *\nAllow: /\nDisallow: /admin\nSitemap: ".url('/sitemap.xml')."\n", 200, ['Content-Type' => 'text/plain']));

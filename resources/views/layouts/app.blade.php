@@ -20,5 +20,11 @@
 </head>
 <body>
     @yield('content')
+
+    @if(session('success'))
+        <div id="bic-server-flash" data-type="success" data-title="Action Completed Successfully" data-message="{{ session('success') }}" hidden></div>
+    @elseif(session('error'))
+        <div id="bic-server-flash" data-type="error" data-title="Action Unsuccessful" data-message="{{ session('error') }}" hidden></div>
+    @endif
 </body>
 </html>

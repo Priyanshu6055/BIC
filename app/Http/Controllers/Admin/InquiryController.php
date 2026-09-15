@@ -25,8 +25,10 @@ class InquiryController extends Controller
     public function export(Request $request): StreamedResponse
     {
         $format = strtolower($request->input('format', 'csv'));
-        $query = $this->filteredQuery($request)->latest();
-        $filename = 'bic-inquiries-' . now()->format('Y-m-d-His');
+        $isFullTable = $request->input('scope', 'all') === 'all' && ! $request->has('filtered');
+        
+        $query = $isFullTable ? Inquiry::query()->latest() : $this->filteredQuery($request)->latest();
+        $filename = ($isFullTable ? 'bic-inquiries-full-table-' : 'bic-inquiries-filtered-') . now()->format('Y-m-d-His');
 
         if ($format === 'json') {
             return response()->streamDownload(function () use ($query) {
@@ -34,42 +36,68 @@ class InquiryController extends Controller
             }, "{$filename}.json", ['Content-Type' => 'application/json']);
         }
 
-        // Default Excel-compatible CSV export
+        // Default Excel-compatible CSV export containing full table data
         return response()->streamDownload(function () use ($query) {
             $handle = fopen('php://output', 'w');
             // Write UTF-8 BOM for seamless Microsoft Excel rendering
             fprintf($handle, chr(0xEF).chr(0xBB).chr(0xBF));
 
             fputcsv($handle, [
+                'ID',
                 'Reference',
-                'Date',
-                'Type',
+                'Submission Date & Time',
+                'Category / Type',
+                'Status',
                 'Client Name',
                 'Email Address',
-                'Phone',
-                'Company',
-                'Status',
-                'Has Document',
-                'Submission Details',
+                'Phone Number',
+                'Company / Organisation',
+                'Designation',
+                'Location / City',
+                'Sector / Industry',
+                'Stage / Business Age',
+                'Capital / Ticket Size',
+                'Capital Use / Purpose',
+                'Transaction Side / Type',
+                'Has Document Attached',
+                'Full Submission Payload',
             ]);
 
             $query->chunk(200, function ($inquiries) use ($handle) {
                 foreach ($inquiries as $inquiry) {
-                    $details = collect($inquiry->payload ?? [])
+                    $payload = $inquiry->payload ?? [];
+
+                    $designation = $payload['designation'] ?? '—';
+                    $location = $payload['city'] ?? $payload['location'] ?? $payload['geography'] ?? '—';
+                    $sector = $payload['sector'] ?? $payload['industry'] ?? $payload['preferredSectors'] ?? '—';
+                    $stage = $payload['businessStage'] ?? $payload['businessAge'] ?? $payload['preferredStage'] ?? '—';
+                    $capital = $payload['capitalSought'] ?? $payload['capitalRequirement'] ?? $payload['ticketSize'] ?? $payload['transactionRange'] ?? '—';
+                    $purpose = $payload['capitalUse'] ?? $payload['capitalPurpose'] ?? $payload['strategicCapabilities'] ?? $payload['message'] ?? '—';
+                    $transactionSide = $payload['transactionSide'] ?? $payload['transactionType'] ?? '—';
+
+                    $fullDetails = collect($payload)
                         ->map(fn ($val, $key) => str($key)->headline() . ': ' . (is_bool($val) ? ($val ? 'Yes' : 'No') : (is_array($val) ? implode(', ', $val) : $val)))
                         ->implode(' | ');
 
                     fputcsv($handle, [
+                        $inquiry->id,
                         $inquiry->reference,
                         $inquiry->created_at?->format('Y-m-d H:i:s'),
                         strtoupper($inquiry->type),
+                        $inquiry->status,
                         $inquiry->name,
                         $inquiry->email,
                         $inquiry->phone,
                         $inquiry->company ?: '—',
-                        $inquiry->status,
+                        $designation,
+                        $location,
+                        $sector,
+                        $stage,
+                        $capital,
+                        $purpose,
+                        $transactionSide,
                         $inquiry->document_path ? 'Yes' : 'No',
-                        $details,
+                        $fullDetails,
                     ]);
                 }
             });
@@ -90,7 +118,7 @@ class InquiryController extends Controller
     {
         $data = $request->validate(['status' => ['required', 'in:New,Reviewed,Contacted,Closed,Spam']]);
         $inquiry->update($data);
-        return back()->with('success', 'Inquiry status updated.');
+        return back()->with('success', 'The inquiry status has been successfully updated to "'.$data['status'].'".');
     }
 
     public function download(Inquiry $inquiry): StreamedResponse
