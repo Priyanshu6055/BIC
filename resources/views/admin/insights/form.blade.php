@@ -53,10 +53,15 @@
         </label>
         
         <label>
-            <span>Cover Image File</span>
-            <input name="cover_upload" type="file" accept="image/*">
+            <span>Cover Image File <small style="font-weight: normal; color: var(--admin-text-muted); font-size: 11.5px;">(Recommended: 1200 &times; 675 px &bull; 16:9 ratio &bull; Max 5 MB)</small></span>
+            <input name="cover_upload" type="file" accept="image/png,image/jpeg,image/webp,image/jpg">
+            <small class="admin-input-hint" style="display: block; margin-top: 5px;">
+                Recommended size: <strong>1200 &times; 675 px</strong> (landscape 16:9 ratio). Max file size: <strong>5 MB</strong> (JPG, PNG, WebP).
+            </small>
             @if($insight->cover_image)
-                <small class="admin-input-hint">Current: {{ $insight->cover_image }}</small>
+                <small class="admin-input-hint" style="display: block; margin-top: 4px; color: var(--admin-primary);">
+                    Current image: <a href="{{ asset($insight->cover_image) }}" target="_blank" style="color: inherit; text-decoration: underline;">{{ $insight->cover_image }}</a>
+                </small>
             @endif
         </label>
         
