@@ -1,7 +1,6 @@
-@extends('layouts.admin')
-@section('title', 'Work & Leads Pipeline | BIC Administration')
+<?php $__env->startSection('title', 'Work & Leads Pipeline | BIC Administration'); ?>
 
-@section('admin-content')
+<?php $__env->startSection('admin-content'); ?>
 <div class="admin-page-header">
     <div class="admin-header-top">
         <div>
@@ -9,7 +8,7 @@
             <h1>Work/Leads</h1>
         </div>
         <div class="admin-header-actions">
-            <a class="admin-primary admin-btn-create" href="{{ route('admin.leads.create') }}">
+            <a class="admin-primary admin-btn-create" href="<?php echo e(route('admin.leads.create')); ?>">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                     <line x1="12" y1="5" x2="12" y2="19"></line>
                     <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -23,71 +22,71 @@
     <div class="lead-stats-grid">
         <div class="lead-stat-card">
             <span class="stat-label">Total Leads</span>
-            <strong class="stat-value">{{ $stats['total'] }}</strong>
+            <strong class="stat-value"><?php echo e($stats['total']); ?></strong>
         </div>
         <div class="lead-stat-card">
             <span class="stat-label">Investors</span>
-            <strong class="stat-value text-investor">{{ $stats['investors'] }}</strong>
+            <strong class="stat-value text-investor"><?php echo e($stats['investors']); ?></strong>
         </div>
         <div class="lead-stat-card">
             <span class="stat-label">Startups</span>
-            <strong class="stat-value text-startup">{{ $stats['startups'] }}</strong>
+            <strong class="stat-value text-startup"><?php echo e($stats['startups']); ?></strong>
         </div>
         <div class="lead-stat-card">
             <span class="stat-label">In Progress Actions</span>
-            <strong class="stat-value text-progress">{{ $stats['in_progress'] }}</strong>
+            <strong class="stat-value text-progress"><?php echo e($stats['in_progress']); ?></strong>
         </div>
     </div>
 
     <!-- Filter and Search Toolbar -->
     <div class="admin-toolbar">
-        <form class="admin-filters lead-filters-form" method="GET" action="{{ route('admin.leads.index') }}">
+        <form class="admin-filters lead-filters-form" method="GET" action="<?php echo e(route('admin.leads.index')); ?>">
             <div class="admin-search-wrap">
                 <svg class="admin-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <circle cx="11" cy="11" r="8"></circle>
                     <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                 </svg>
-                <input type="text" name="search" placeholder="Search client, company, email, source..." value="{{ request('search') }}">
+                <input type="text" name="search" placeholder="Search client, company, email, source..." value="<?php echo e(request('search')); ?>">
             </div>
 
             <select name="type" onchange="this.form.submit()">
                 <option value="">All Types</option>
-                <option value="investor" @selected(request('type') === 'investor')>Investor</option>
-                <option value="startup" @selected(request('type') === 'startup')>Startup</option>
+                <option value="investor" <?php if(request('type') === 'investor'): echo 'selected'; endif; ?>>Investor</option>
+                <option value="startup" <?php if(request('type') === 'startup'): echo 'selected'; endif; ?>>Startup</option>
             </select>
 
             <select name="sub_type" onchange="this.form.submit()">
                 <option value="">All Sub-types</option>
                 <optgroup label="Investor Sub-types">
-                    @foreach($subtypesMap['investor'] as $key => $label)
-                        <option value="{{ $key }}" @selected(request('sub_type') === $key)>{{ $label }}</option>
-                    @endforeach
+                    <?php $__currentLoopData = $subtypesMap['investor']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <option value="<?php echo e($key); ?>" <?php if(request('sub_type') === $key): echo 'selected'; endif; ?>><?php echo e($label); ?></option>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </optgroup>
                 <optgroup label="Startup Sub-types">
-                    @foreach($subtypesMap['startup'] as $key => $label)
-                        <option value="{{ $key }}" @selected(request('sub_type') === $key)>{{ $label }}</option>
-                    @endforeach
+                    <?php $__currentLoopData = $subtypesMap['startup']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $label): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <option value="<?php echo e($key); ?>" <?php if(request('sub_type') === $key): echo 'selected'; endif; ?>><?php echo e($label); ?></option>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </optgroup>
             </select>
 
             <select name="state" onchange="this.form.submit()">
                 <option value="">All Action States</option>
-                <option value="In Progress" @selected(request('state') === 'In Progress')>In Progress</option>
-                <option value="Complete" @selected(request('state') === 'Complete')>Complete</option>
+                <option value="In Progress" <?php if(request('state') === 'In Progress'): echo 'selected'; endif; ?>>In Progress</option>
+                <option value="Complete" <?php if(request('state') === 'Complete'): echo 'selected'; endif; ?>>Complete</option>
             </select>
 
             <select name="sort" onchange="this.form.submit()">
-                <option value="latest" @selected(request('sort', 'latest') === 'latest')>Sort: Newest First</option>
-                <option value="oldest" @selected(request('sort') === 'oldest')>Sort: Oldest First</option>
-                <option value="name_asc" @selected(request('sort') === 'name_asc')>Sort: Client Name (A-Z)</option>
-                <option value="name_desc" @selected(request('sort') === 'name_desc')>Sort: Client Name (Z-A)</option>
-                <option value="company_asc" @selected(request('sort') === 'company_asc')>Sort: Company (A-Z)</option>
+                <option value="latest" <?php if(request('sort', 'latest') === 'latest'): echo 'selected'; endif; ?>>Sort: Newest First</option>
+                <option value="oldest" <?php if(request('sort') === 'oldest'): echo 'selected'; endif; ?>>Sort: Oldest First</option>
+                <option value="name_asc" <?php if(request('sort') === 'name_asc'): echo 'selected'; endif; ?>>Sort: Client Name (A-Z)</option>
+                <option value="name_desc" <?php if(request('sort') === 'name_desc'): echo 'selected'; endif; ?>>Sort: Client Name (Z-A)</option>
+                <option value="company_asc" <?php if(request('sort') === 'company_asc'): echo 'selected'; endif; ?>>Sort: Company (A-Z)</option>
             </select>
 
             <button type="submit" class="admin-btn-filter">Filter</button>
-            @if(request()->anyFilled(['search', 'type', 'sub_type', 'state', 'sort']))
-                <a href="{{ route('admin.leads.index') }}" class="admin-btn-clear">Clear</a>
-            @endif
+            <?php if(request()->anyFilled(['search', 'type', 'sub_type', 'state', 'sort'])): ?>
+                <a href="<?php echo e(route('admin.leads.index')); ?>" class="admin-btn-clear">Clear</a>
+            <?php endif; ?>
         </form>
     </div>
 </div>
@@ -105,28 +104,30 @@
             </tr>
         </thead>
         <tbody>
-            @forelse($leads as $lead)
-            <tr id="lead-row-{{ $lead->id }}">
+            <?php $__empty_1 = true; $__currentLoopData = $leads; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $lead): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+            <tr id="lead-row-<?php echo e($lead->id); ?>">
                 <!-- Client & Company (Concise) -->
                 <td>
                     <div class="lead-client-info">
-                        <a href="{{ route('admin.leads.show', $lead) }}" class="lead-client-link" title="View complete lead dossier">
-                            <strong class="lead-client-name">{{ $lead->name }}</strong>
+                        <a href="<?php echo e(route('admin.leads.show', $lead)); ?>" class="lead-client-link" title="View complete lead dossier">
+                            <strong class="lead-client-name"><?php echo e($lead->name); ?></strong>
                         </a>
-                        @if($lead->company)
-                            <span class="lead-company-name">{{ $lead->company }}</span>
-                        @endif
+                        <?php if($lead->company): ?>
+                            <span class="lead-company-name"><?php echo e($lead->company); ?></span>
+                        <?php endif; ?>
                     </div>
                 </td>
 
                 <!-- Type & Subtype -->
                 <td>
                     <div class="lead-type-wrap">
-                        <span class="lead-badge lead-badge-{{ $lead->type }}">
-                            {{ $lead->formatted_type }}
+                        <span class="lead-badge lead-badge-<?php echo e($lead->type); ?>">
+                            <?php echo e($lead->formatted_type); ?>
+
                         </span>
                         <span class="lead-subtype-tag">
-                            {{ $lead->formatted_sub_type }}
+                            <?php echo e($lead->formatted_sub_type); ?>
+
                         </span>
                     </div>
                 </td>
@@ -134,52 +135,53 @@
                 <!-- Contact -->
                 <td>
                     <div class="lead-contact-block">
-                        @if($lead->email)
-                            <a href="mailto:{{ $lead->email }}" class="lead-contact-link lead-email" title="Email {{ $lead->name }}">
+                        <?php if($lead->email): ?>
+                            <a href="mailto:<?php echo e($lead->email); ?>" class="lead-contact-link lead-email" title="Email <?php echo e($lead->name); ?>">
                                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                                <span>{{ $lead->email }}</span>
+                                <span><?php echo e($lead->email); ?></span>
                             </a>
-                        @endif
-                        @if($lead->mobile_no)
-                            <a href="tel:{{ $lead->mobile_no }}" class="lead-contact-link lead-phone" title="Call {{ $lead->mobile_no }}">
+                        <?php endif; ?>
+                        <?php if($lead->mobile_no): ?>
+                            <a href="tel:<?php echo e($lead->mobile_no); ?>" class="lead-contact-link lead-phone" title="Call <?php echo e($lead->mobile_no); ?>">
                                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-                                <span>{{ $lead->mobile_no }}</span>
+                                <span><?php echo e($lead->mobile_no); ?></span>
                             </a>
-                        @endif
-                        @if(!$lead->email && !$lead->mobile_no)
+                        <?php endif; ?>
+                        <?php if(!$lead->email && !$lead->mobile_no): ?>
                             <span class="text-muted">—</span>
-                        @endif
+                        <?php endif; ?>
                     </div>
                 </td>
 
                 <!-- Source -->
                 <td>
-                    <span class="lead-source-chip">{{ $lead->source ?: 'Direct / Unspecified' }}</span>
+                    <span class="lead-source-chip"><?php echo e($lead->source ?: 'Direct / Unspecified'); ?></span>
                 </td>
 
                 <!-- Actions, Timeline & State with Expandable Section -->
                 <td>
-                    <div class="lead-actions-cell" id="lead-actions-cell-{{ $lead->id }}">
+                    <div class="lead-actions-cell" id="lead-actions-cell-<?php echo e($lead->id); ?>">
                         <div class="lead-actions-summary">
-                            @if($lead->latestAction)
-                                <div class="action-preview-item" id="row-preview-{{ $lead->id }}">
-                                    <span class="state-pill state-{{ Str::slug($lead->latestAction->state) }}">
-                                        {{ $lead->latestAction->state }}
-                                    </span>
-                                    <span class="action-preview-text" title="{{ $lead->latestAction->action }}">{{ Str::limit($lead->latestAction->action, 34) }}</span>
-                                    @if($lead->latestAction->timeline)
-                                        <small class="action-preview-date">{{ $lead->latestAction->timeline }}</small>
-                                    @endif
-                                </div>
-                            @else
-                                <span class="no-actions-yet" id="row-preview-{{ $lead->id }}">No actions yet</span>
-                            @endif
+                            <?php if($lead->latestAction): ?>
+                                <div class="action-preview-item" id="row-preview-<?php echo e($lead->id); ?>">
+                                    <span class="state-pill state-<?php echo e(Str::slug($lead->latestAction->state)); ?>">
+                                        <?php echo e($lead->latestAction->state); ?>
 
-                            <button type="button" class="btn-lead-action-toggle" id="btn-toggle-{{ $lead->id }}" onclick="toggleLeadActions({{ $lead->id }})" title="Click to expand actions section below">
+                                    </span>
+                                    <span class="action-preview-text" title="<?php echo e($lead->latestAction->action); ?>"><?php echo e(Str::limit($lead->latestAction->action, 34)); ?></span>
+                                    <?php if($lead->latestAction->timeline): ?>
+                                        <small class="action-preview-date"><?php echo e($lead->latestAction->timeline); ?></small>
+                                    <?php endif; ?>
+                                </div>
+                            <?php else: ?>
+                                <span class="no-actions-yet" id="row-preview-<?php echo e($lead->id); ?>">No actions yet</span>
+                            <?php endif; ?>
+
+                            <button type="button" class="btn-lead-action-toggle" id="btn-toggle-<?php echo e($lead->id); ?>" onclick="toggleLeadActions(<?php echo e($lead->id); ?>)" title="Click to expand actions section below">
                                 <svg class="toggle-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                                     <polyline points="6 9 12 15 18 9"></polyline>
                                 </svg>
-                                <span class="actions-count-label">{{ $lead->actions->count() }} {{ Str::plural('Action', $lead->actions->count()) }}</span>
+                                <span class="actions-count-label"><?php echo e($lead->actions->count()); ?> <?php echo e(Str::plural('Action', $lead->actions->count())); ?></span>
                             </button>
                         </div>
                     </div>
@@ -188,17 +190,17 @@
                 <!-- Manage Row Actions -->
                 <td style="text-align: right;">
                     <div class="lead-row-actions">
-                        <a href="{{ route('admin.leads.show', $lead) }}" class="admin-btn-action-view" title="View complete lead dossier">
+                        <a href="<?php echo e(route('admin.leads.show', $lead)); ?>" class="admin-btn-action-view" title="View complete lead dossier">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                             <span>View</span>
                         </a>
-                        <a href="{{ route('admin.leads.edit', $lead) }}" class="admin-btn-action-edit" title="Edit entire lead on new page">
+                        <a href="<?php echo e(route('admin.leads.edit', $lead)); ?>" class="admin-btn-action-edit" title="Edit entire lead on new page">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
                             <span>Edit</span>
                         </a>
-                        <form method="POST" action="{{ route('admin.leads.destroy', $lead) }}" onsubmit="return confirm('Are you sure you want to remove {{ addslashes($lead->name) }}?');" style="display:inline;">
-                            @csrf
-                            @method('DELETE')
+                        <form method="POST" action="<?php echo e(route('admin.leads.destroy', $lead)); ?>" onsubmit="return confirm('Are you sure you want to remove <?php echo e(addslashes($lead->name)); ?>?');" style="display:inline;">
+                            <?php echo csrf_field(); ?>
+                            <?php echo method_field('DELETE'); ?>
                             <button type="submit" class="admin-btn-action-delete" title="Delete lead">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                             </button>
@@ -208,17 +210,17 @@
             </tr>
 
             <!-- Expandable Actions Section in Bottom -->
-            <tr id="lead-actions-row-{{ $lead->id }}" class="lead-expanded-row" style="display: none;">
+            <tr id="lead-actions-row-<?php echo e($lead->id); ?>" class="lead-expanded-row" style="display: none;">
                 <td colspan="6" class="lead-expanded-cell">
                     <div class="lead-expanded-panel">
                         <div class="lead-panel-top">
                             <div class="lead-panel-heading">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                                <strong>Actions &amp; Milestones for {{ $lead->name }}</strong>
-                                <span class="lead-panel-count" id="panel-count-{{ $lead->id }}">{{ $lead->actions->count() }} {{ Str::plural('action', $lead->actions->count()) }}</span>
-                                <a href="{{ route('admin.leads.show', $lead) }}" class="lead-panel-dossier-link" title="Open full dossier page">View Full Data &rarr;</a>
+                                <strong>Actions &amp; Milestones for <?php echo e($lead->name); ?></strong>
+                                <span class="lead-panel-count" id="panel-count-<?php echo e($lead->id); ?>"><?php echo e($lead->actions->count()); ?> <?php echo e(Str::plural('action', $lead->actions->count())); ?></span>
+                                <a href="<?php echo e(route('admin.leads.show', $lead)); ?>" class="lead-panel-dossier-link" title="Open full dossier page">View Full Data &rarr;</a>
                             </div>
-                            <button type="button" class="lead-panel-collapse-btn" onclick="toggleLeadActions({{ $lead->id }})" title="Collapse this section">
+                            <button type="button" class="lead-panel-collapse-btn" onclick="toggleLeadActions(<?php echo e($lead->id); ?>)" title="Collapse this section">
                                 <span>Collapse section</span>
                                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"></polyline></svg>
                             </button>
@@ -227,48 +229,50 @@
                         <div class="lead-panel-layout">
                             <!-- Left: Action items list -->
                             <div class="lead-panel-list-col">
-                                <div class="lead-panel-actions-list" id="panel-list-{{ $lead->id }}">
-                                    @forelse($lead->actions as $action)
-                                        <div class="lead-action-card" id="action-item-{{ $action->id }}">
+                                <div class="lead-panel-actions-list" id="panel-list-<?php echo e($lead->id); ?>">
+                                    <?php $__empty_2 = true; $__currentLoopData = $lead->actions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $action): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_2 = false; ?>
+                                        <div class="lead-action-card" id="action-item-<?php echo e($action->id); ?>">
                                             <div class="action-card-main">
-                                                <h4 class="action-card-title">{{ $action->action }}</h4>
+                                                <h4 class="action-card-title"><?php echo e($action->action); ?></h4>
                                                 <div class="action-card-meta">
-                                                    @if($action->timeline)
+                                                    <?php if($action->timeline): ?>
                                                         <span class="action-meta-timeline">
                                                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                                                            {{ $action->timeline }}
+                                                            <?php echo e($action->timeline); ?>
+
                                                         </span>
-                                                    @endif
+                                                    <?php endif; ?>
                                                     <button type="button" 
-                                                        class="state-toggle-btn state-{{ Str::slug($action->state) }}" 
-                                                        onclick="toggleActionState({{ $action->id }}, this, {{ $lead->id }})"
+                                                        class="state-toggle-btn state-<?php echo e(Str::slug($action->state)); ?>" 
+                                                        onclick="toggleActionState(<?php echo e($action->id); ?>, this, <?php echo e($lead->id); ?>)"
                                                         title="Click to toggle between In Progress and Complete">
-                                                        {{ $action->state }}
+                                                        <?php echo e($action->state); ?>
+
                                                     </button>
-                                                    <span class="action-meta-date">Recorded {{ $action->created_at->format('M d, Y') }}</span>
+                                                    <span class="action-meta-date">Recorded <?php echo e($action->created_at->format('M d, Y')); ?></span>
                                                 </div>
                                             </div>
                                             <div class="action-card-controls">
-                                                <button type="button" class="action-card-edit-btn" onclick="editActionInline({{ $action->id }}, {{ $lead->id }}, '{{ addslashes($action->action) }}', '{{ addslashes($action->timeline ?? '') }}', '{{ addslashes($action->state) }}')" title="Edit this action">
+                                                <button type="button" class="action-card-edit-btn" onclick="editActionInline(<?php echo e($action->id); ?>, <?php echo e($lead->id); ?>, '<?php echo e(addslashes($action->action)); ?>', '<?php echo e(addslashes($action->timeline ?? '')); ?>', '<?php echo e(addslashes($action->state)); ?>')" title="Edit this action">
                                                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                                                 </button>
-                                                <button type="button" class="action-card-delete-btn" onclick="deleteAction({{ $action->id }}, {{ $lead->id }})" title="Remove this action">
+                                                <button type="button" class="action-card-delete-btn" onclick="deleteAction(<?php echo e($action->id); ?>, <?php echo e($lead->id); ?>)" title="Remove this action">
                                                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                                                 </button>
                                             </div>
                                         </div>
-                                    @empty
-                                        <div class="panel-empty" id="panel-empty-{{ $lead->id }}">
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_2): ?>
+                                        <div class="panel-empty" id="panel-empty-<?php echo e($lead->id); ?>">
                                             No actions recorded yet. Use the form on the right to record the first follow-up action.
                                         </div>
-                                    @endforelse
+                                    <?php endif; ?>
                                 </div>
                             </div>
 
                             <!-- Right: Quick Add Form -->
                             <div class="lead-panel-form-col">
-                                <form class="lead-panel-quick-form" onsubmit="submitQuickAction(event, {{ $lead->id }})">
-                                    @csrf
+                                <form class="lead-panel-quick-form" onsubmit="submitQuickAction(event, <?php echo e($lead->id); ?>)">
+                                    <?php echo csrf_field(); ?>
                                     <div class="panel-form-title">+ Add Follow-up Action</div>
                                     <div class="panel-form-field">
                                         <label>Action Description <strong class="req">*</strong></label>
@@ -296,27 +300,28 @@
                     </div>
                 </td>
             </tr>
-            @empty
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
             <tr>
                 <td colspan="6" class="admin-empty">
                     <div class="admin-empty-state">
                         <p>No leads found matching your criteria.</p>
-                        <a href="{{ route('admin.leads.create') }}" class="admin-primary" style="margin-top: 12px; display: inline-flex;">+ Add Your First Lead</a>
+                        <a href="<?php echo e(route('admin.leads.create')); ?>" class="admin-primary" style="margin-top: 12px; display: inline-flex;">+ Add Your First Lead</a>
                     </div>
                 </td>
             </tr>
-            @endforelse
+            <?php endif; ?>
         </tbody>
     </table>
 </div>
 
-@if($leads->hasPages())
+<?php if($leads->hasPages()): ?>
     <div class="admin-pagination">
-        {{ $leads->links() }}
-    </div>
-@endif
+        <?php echo e($leads->links()); ?>
 
-@push('head')
+    </div>
+<?php endif; ?>
+
+<?php $__env->startPush('head'); ?>
 <script>
     // Expand / Collapse Lead Actions Section
     function toggleLeadActions(leadId) {
@@ -632,6 +637,8 @@
         return div.innerHTML;
     }
 </script>
-@endpush
-@endsection
+<?php $__env->stopPush(); ?>
+<?php $__env->stopSection(); ?>
 
+
+<?php echo $__env->make('layouts.admin', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH C:\Users\DESIGN\Downloads\BIC_Laravel_Production_Source\resources\views/admin/leads/index.blade.php ENDPATH**/ ?>

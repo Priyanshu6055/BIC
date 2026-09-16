@@ -170,6 +170,7 @@ class LeadController extends Controller
         $validated = $request->validate([
             'action' => ['required', 'string', 'max:255'],
             'timeline' => ['nullable', 'string', 'max:255'],
+            'state' => ['required', Rule::in([LeadAction::STATE_IN_PROGRESS, LeadAction::STATE_COMPLETE])],
         ]);
 
         $action->update($validated);
