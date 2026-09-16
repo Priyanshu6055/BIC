@@ -1860,6 +1860,13 @@ div.admin-shell {
   color: #94a3b8;
 }
 
+.action-card-controls {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.action-card-edit-btn,
 .action-card-delete-btn {
   background: none;
   border: none;
@@ -1869,6 +1876,11 @@ div.admin-shell {
   border-radius: 4px;
   transition: all 0.15s ease;
   line-height: 1;
+}
+
+.action-card-edit-btn:hover {
+  background: #e0f2fe;
+  color: #0284c7;
 }
 
 .action-card-delete-btn:hover {

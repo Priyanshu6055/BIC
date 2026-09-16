@@ -37,6 +37,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::resource('insights', AdminInsightController::class)->except(['show']);
     Route::resource('leads', AdminLeadController::class);
     Route::post('/leads/{lead}/actions', [AdminLeadController::class, 'storeAction'])->name('leads.actions.store');
+    Route::patch('/leads/actions/{action}', [AdminLeadController::class, 'updateAction'])->name('leads.actions.update');
     Route::patch('/leads/actions/{action}/toggle', [AdminLeadController::class, 'toggleAction'])->name('leads.actions.toggle');
     Route::delete('/leads/actions/{action}', [AdminLeadController::class, 'destroyAction'])->name('leads.actions.destroy');
     Route::get('/password', [AdminPasswordController::class, 'edit'])->name('password.edit');

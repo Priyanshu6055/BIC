@@ -165,6 +165,32 @@ class LeadController extends Controller
         return back()->with('success', 'Action recorded successfully.');
     }
 
+    public function updateAction(Request $request, LeadAction $action): JsonResponse|RedirectResponse
+    {
+        $validated = $request->validate([
+            'action' => ['required', 'string', 'max:255'],
+            'timeline' => ['nullable', 'string', 'max:255'],
+        ]);
+
+        $action->update($validated);
+
+        if ($request->expectsJson() || $request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Action updated successfully.',
+                'action' => [
+                    'id' => $action->id,
+                    'action' => $action->action,
+                    'timeline' => $action->timeline,
+                    'state' => $action->state,
+                    'is_complete' => $action->isComplete(),
+                ],
+            ]);
+        }
+
+        return back()->with('success', 'Action updated successfully.');
+    }
+
     public function toggleAction(Request $request, LeadAction $action): JsonResponse|RedirectResponse
     {
         $newState = $action->isComplete() ? LeadAction::STATE_IN_PROGRESS : LeadAction::STATE_COMPLETE;

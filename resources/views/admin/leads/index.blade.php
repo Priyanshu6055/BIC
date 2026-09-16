@@ -248,9 +248,14 @@
                                                     <span class="action-meta-date">Recorded {{ $action->created_at->format('M d, Y') }}</span>
                                                 </div>
                                             </div>
-                                            <button type="button" class="action-card-delete-btn" onclick="deleteAction({{ $action->id }}, {{ $lead->id }})" title="Remove this action">
-                                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-                                            </button>
+                                            <div class="action-card-controls">
+                                                <button type="button" class="action-card-edit-btn" onclick="editActionInline({{ $action->id }}, {{ $lead->id }}, '{{ addslashes($action->action) }}', '{{ addslashes($action->timeline ?? '') }}')" title="Edit this action">
+                                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                                </button>
+                                                <button type="button" class="action-card-delete-btn" onclick="deleteAction({{ $action->id }}, {{ $lead->id }})" title="Remove this action">
+                                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                                </button>
+                                            </div>
                                         </div>
                                     @empty
                                         <div class="panel-empty" id="panel-empty-{{ $lead->id }}">
@@ -402,9 +407,14 @@
                                 <span class="action-meta-date">Recorded Just now</span>
                             </div>
                         </div>
-                        <button type="button" class="action-card-delete-btn" onclick="deleteAction(${data.action.id}, ${leadId})" title="Remove this action">
-                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-                        </button>
+                        <div class="action-card-controls">
+                            <button type="button" class="action-card-edit-btn" onclick="editActionInline(${data.action.id}, ${leadId}, '${escapeHtml(data.action.action).replace(/'/g, "\\'")}', '${escapeHtml(data.action.timeline || '').replace(/'/g, "\\'")}')" title="Edit this action">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                            </button>
+                            <button type="button" class="action-card-delete-btn" onclick="deleteAction(${data.action.id}, ${leadId})" title="Remove this action">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                            </button>
+                        </div>
                     </div>
                 `;
                 list.insertAdjacentHTML('afterbegin', itemHtml);
@@ -513,6 +523,67 @@
         } catch (err) {
             console.error(err);
             alert('Failed to delete action.');
+        }
+    }
+
+    function editActionInline(actionId, leadId, currentAction, currentTimeline) {
+        const cardMain = document.querySelector(`#action-item-${actionId} .action-card-main`);
+        if (!cardMain) return;
+        
+        if (!cardMain.dataset.oldHtml) {
+            cardMain.dataset.oldHtml = cardMain.innerHTML;
+        }
+
+        cardMain.innerHTML = `
+            <form onsubmit="submitEditAction(event, ${actionId}, ${leadId})" class="inline-edit-form" style="display: flex; flex-direction: column; gap: 6px; width: 100%;">
+                <input type="text" name="action" value="${escapeHtml(currentAction).replace(/"/g, '&quot;')}" required class="quick-input-action" style="padding: 6px; font-size: 13px; border: 1px solid var(--line); border-radius: 4px;">
+                <input type="text" name="timeline" value="${escapeHtml(currentTimeline).replace(/"/g, '&quot;')}" placeholder="Timeline" class="quick-input-timeline" style="padding: 6px; font-size: 13px; border: 1px solid var(--line); border-radius: 4px;">
+                <div style="display: flex; gap: 8px;">
+                    <button type="submit" class="admin-primary" style="padding: 4px 12px; font-size: 11px;">Save</button>
+                    <button type="button" class="admin-btn-clear" style="padding: 4px 12px; font-size: 11px;" onclick="cancelEditAction(${actionId})">Cancel</button>
+                </div>
+            </form>
+        `;
+    }
+
+    function cancelEditAction(actionId) {
+        const cardMain = document.querySelector(`#action-item-${actionId} .action-card-main`);
+        if (cardMain && cardMain.dataset.oldHtml) {
+            cardMain.innerHTML = cardMain.dataset.oldHtml;
+        }
+    }
+
+    async function submitEditAction(event, actionId, leadId) {
+        event.preventDefault();
+        const form = event.target;
+        const actionVal = form.querySelector('[name="action"]').value.trim();
+        const timelineVal = form.querySelector('[name="timeline"]').value.trim();
+        const btn = form.querySelector('button[type="submit"]');
+        
+        if (!actionVal) return;
+        btn.disabled = true;
+        btn.textContent = 'Saving...';
+        
+        try {
+            const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || document.querySelector('[name="_token"]')?.value;
+            const response = await fetch(`/admin/leads/actions/${actionId}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'X-CSRF-TOKEN': token },
+                body: JSON.stringify({ action: actionVal, timeline: timelineVal })
+            });
+            const data = await response.json();
+            if (data.success) {
+                window.location.reload();
+            } else {
+                alert(data.message || 'Could not update action.');
+                btn.disabled = false;
+                btn.textContent = 'Save';
+            }
+        } catch (err) {
+            console.error(err);
+            alert('Failed to update action.');
+            btn.disabled = false;
+            btn.textContent = 'Save';
         }
     }
 
