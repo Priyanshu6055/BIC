@@ -15,6 +15,14 @@
             <h1>{{ $insight->exists ? 'Edit Insight' : 'Create New Insight' }}</h1>
         </div>
     </div>
+    @if($insight->exists)
+        <div class="admin-detail-actions">
+            <button type="button" class="admin-btn-danger-fill" onclick="if(confirm('Are you sure you want to delete this insight: &quot;{{ addslashes($insight->title) }}&quot;? This action cannot be undone.')) { document.getElementById('deleteInsightForm').submit(); }">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                <span>Delete Insight</span>
+            </button>
+        </div>
+    @endif
 </div>
 
 <form class="admin-form-card" method="post" enctype="multipart/form-data" action="{{ $insight->exists ? route('admin.insights.update', $insight) : route('admin.insights.store') }}">
@@ -114,9 +122,24 @@
         </div>
     @endif
 
-    <div class="admin-form-actions">
-        <button class="admin-primary" type="submit">Save Insight</button>
-        <a href="{{ route('admin.insights.index') }}" class="admin-btn-clear">Cancel</a>
+    <div class="admin-form-actions" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+        <div style="display: flex; gap: 12px; align-items: center;">
+            <button class="admin-primary" type="submit">Save Insight</button>
+            <a href="{{ route('admin.insights.index') }}" class="admin-btn-clear">Cancel</a>
+        </div>
+        @if($insight->exists)
+            <button type="button" class="admin-btn-danger-outline" onclick="if(confirm('Are you sure you want to delete this insight: &quot;{{ addslashes($insight->title) }}&quot;? This action cannot be undone.')) { document.getElementById('deleteInsightForm').submit(); }">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                <span>Delete Insight</span>
+            </button>
+        @endif
     </div>
 </form>
+
+@if($insight->exists)
+    <form id="deleteInsightForm" method="POST" action="{{ route('admin.insights.destroy', $insight) }}" style="display: none;">
+        @csrf
+        @method('DELETE')
+    </form>
+@endif
 @endsection

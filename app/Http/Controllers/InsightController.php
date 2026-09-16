@@ -15,7 +15,28 @@ class InsightController extends Controller
     public function show(string $slug): View
     {
         $insight = Insight::published()->where('slug', $slug)->firstOrFail();
-        return view('insights.show', compact('insight'));
+        $relatedInsights = Insight::published()
+            ->where('id', '!=', $insight->id)
+            ->where(function ($query) use ($insight) {
+                if ($insight->category) {
+                    $query->where('category', $insight->category);
+                }
+            })
+            ->latest('published_at')
+            ->take(3)
+            ->get();
+
+        if ($relatedInsights->count() < 3) {
+            $more = Insight::published()
+                ->where('id', '!=', $insight->id)
+                ->whereNotIn('id', $relatedInsights->pluck('id'))
+                ->latest('published_at')
+                ->take(3 - $relatedInsights->count())
+                ->get();
+            $relatedInsights = $relatedInsights->merge($more);
+        }
+
+        return view('insights.show', compact('insight', 'relatedInsights'));
     }
 }
 

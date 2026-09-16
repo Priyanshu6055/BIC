@@ -108,8 +108,7 @@ for (const form of forms) {
                                     <polyline points="22 4 12 14.01 9 11.01"></polyline>
                                 </svg>
                             </div>
-                            <h2 style="font-size: 26px; font-family: Georgia, serif; color: #1e293b; margin: 0 0 24px;">Your response has been submitted successfully.</h2>
-                            <p><a class="button button--primary" href="/">Back to Home</a></p>
+                            <h2 style="font-size: 26px; font-family: Georgia, serif; color: #1e293b; margin: 0;">Your response has been submitted successfully.</h2>
                         </div>
                     </div>
                 `;

@@ -5,10 +5,10 @@
     </div>
     <div class="footer-col footer-col--nav">
         <span class="footer-heading">Navigation</span>
-        <a href="#who">Who we are</a>
-        <a href="#what">What we do</a>
-        <a href="#serve">Who we serve</a>
-        <a href="#why">Why BIC</a>
+        <a href="{{ route('home') }}#who">Who we are</a>
+        <a href="{{ route('home') }}#what">What we do</a>
+        <a href="{{ route('home') }}#serve">Who we serve</a>
+        <a href="{{ route('home') }}#why">Why BIC</a>
         <a href="{{ route('insights.index') }}">Insights</a>
         <a href="{{ route('contact') }}">Contact</a>
     </div>
@@ -18,11 +18,6 @@
             <span class="footer-contact-label">Email inquiries:</span>
             <a href="mailto:connect@bridgrindia.com" class="footer-email-link">connect@bridgrindia.com</a>
         </p>
-        <p class="footer-contact-item">
-            <span class="footer-contact-label">Alternative:</span>
-            <a href="mailto:connect@bridgeindia.com" class="footer-email-link">connect@bridgeindia.com</a>
-        </p>
-        <p class="footer-contact-subtext">Operating across major Indian commercial hubs with confidential advisory engagements.</p>
     </div>
     <div class="footer-col footer-col--legal">
         <span class="footer-heading">Notice</span>

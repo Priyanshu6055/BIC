@@ -209,16 +209,15 @@ h3 {
   transition:
     background-color var(--motion-ui) var(--ease-standard),
     color var(--motion-ui) var(--ease-standard),
-    border-color var(--motion-ui) var(--ease-standard),
-    translate var(--motion-ui-fast) var(--ease-standard);
+    border-color var(--motion-ui) var(--ease-standard);
 }
 
 .button:hover {
-  translate: 0 -0.125rem;
+  translate: none;
 }
 
 .button:active {
-  translate: 0;
+  translate: none;
 }
 
 .button:disabled {

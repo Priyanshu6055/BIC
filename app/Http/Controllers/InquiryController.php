@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\InquiryThankYouMail;
 use App\Models\Inquiry;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
@@ -58,6 +61,17 @@ class InquiryController extends Controller
             'document_path' => $documentPath,
             'status' => 'New',
         ]);
+
+        try {
+            if (! empty($inquiry->email)) {
+                Mail::to($inquiry->email, $inquiry->name ?: null)
+                    ->send(new InquiryThankYouMail($inquiry));
+            }
+        } catch (\Throwable $e) {
+            Log::error('Failed to send thank-you email for inquiry '.$inquiry->reference.': '.$e->getMessage(), [
+                'exception' => $e,
+            ]);
+        }
 
         $response = ['status' => 'success', 'message' => 'Your inquiry has been received.', 'reference' => $inquiry->reference];
         return $request->expectsJson()

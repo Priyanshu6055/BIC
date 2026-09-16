@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\InquiryController as AdminInquiryController;
 use App\Http\Controllers\Admin\InsightController as AdminInsightController;
+use App\Http\Controllers\Admin\LeadController as AdminLeadController;
 use App\Http\Controllers\Admin\PasswordController as AdminPasswordController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InquiryController;
@@ -33,7 +34,11 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::patch('/inquiries/{inquiry}', [AdminInquiryController::class, 'update'])->name('inquiries.update');
     Route::get('/inquiries/{inquiry}/document', [AdminInquiryController::class, 'download'])->name('inquiries.document');
     Route::get('/insights/export', [AdminInsightController::class, 'export'])->name('insights.export');
-    Route::resource('insights', AdminInsightController::class)->except(['show', 'destroy']);
+    Route::resource('insights', AdminInsightController::class)->except(['show']);
+    Route::resource('leads', AdminLeadController::class);
+    Route::post('/leads/{lead}/actions', [AdminLeadController::class, 'storeAction'])->name('leads.actions.store');
+    Route::patch('/leads/actions/{action}/toggle', [AdminLeadController::class, 'toggleAction'])->name('leads.actions.toggle');
+    Route::delete('/leads/actions/{action}', [AdminLeadController::class, 'destroyAction'])->name('leads.actions.destroy');
     Route::get('/password', [AdminPasswordController::class, 'edit'])->name('password.edit');
     Route::put('/password', [AdminPasswordController::class, 'update'])->name('password.update');
 });

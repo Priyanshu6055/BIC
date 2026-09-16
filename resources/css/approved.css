@@ -109,23 +109,17 @@ nav {
 nav a {
   position: relative;
   padding: 29px 0;
+  transition: color 0.2s ease;
 }
 
-nav a:after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 20px;
-  height: 1px;
-  background: var(--accent);
-  transform: scaleX(0);
-  transition: 0.25s;
+nav a:hover,
+nav a:focus-visible {
+  color: var(--primary);
 }
 
-nav a:hover:after,
-nav a:focus-visible:after {
-  transform: scaleX(1);
+header.on-dark nav a:hover,
+header.on-dark nav a:focus-visible {
+  color: var(--accent);
 }
 
 .header-cta {
@@ -135,10 +129,20 @@ nav a:focus-visible:after {
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.08em;
+  transition: background-color 0.2s ease, opacity 0.2s ease;
+}
+
+.header-cta:hover {
+  background: var(--primary-2);
 }
 
 header.on-dark .header-cta {
   background: #fff;
+  color: var(--deep);
+}
+
+header.on-dark .header-cta:hover {
+  background: var(--accent);
   color: var(--deep);
 }
 
@@ -232,12 +236,23 @@ h1 em {
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.08em;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.btn:hover {
+  background: rgba(0, 0, 0, 0.05);
 }
 
 .btn.primary {
   background: var(--primary);
   color: #fff;
   border-color: var(--primary);
+}
+
+.btn.primary:hover {
+  background: var(--primary-2);
+  border-color: var(--primary-2);
+  color: #fff;
 }
 
 .hero-note {

@@ -108,6 +108,18 @@ class InsightController extends Controller
         return back()->with('success', 'Insight updated.');
     }
 
+    public function destroy(Insight $insight): RedirectResponse
+    {
+        if ($insight->cover_image && str_starts_with($insight->cover_image, 'storage/')) {
+            Storage::disk('public')->delete(Str::after($insight->cover_image, 'storage/'));
+        }
+
+        $title = $insight->title;
+        $insight->delete();
+
+        return redirect()->route('admin.insights.index')->with('success', "Insight \"{$title}\" was successfully deleted.");
+    }
+
     private function filteredQuery(Request $request)
     {
         return Insight::query()
