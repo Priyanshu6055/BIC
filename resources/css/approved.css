@@ -180,7 +180,7 @@ header.on-dark .header-cta:hover {
   position: absolute;
   z-index: 20;
   inset: 0;
-  padding: 132px var(--content-x) 70px;
+  padding: 96px var(--content-x) 70px;
   display: grid;
   grid-template-columns: minmax(0, 0.95fr) minmax(480px, 1.05fr);
   gap: 4vw;
@@ -948,7 +948,7 @@ footer a:hover {
   }
 
   .hero-grid {
-    padding: 132px 6vw 55px;
+    padding: 104px 6vw 55px;
     grid-template-columns: 1fr;
     align-content: start;
   }
@@ -1302,7 +1302,7 @@ footer a:hover {
   }
 
   .approved-site .hero-grid {
-    padding-top: 148px !important;
+    padding-top: 106px !important;
   }
 
   .approved-site .hero-wash {
@@ -1811,7 +1811,7 @@ header {
 }
 
 .hero-grid {
-  padding: 128px var(--gutter) 96px !important;
+  padding: 96px var(--gutter) 96px !important;
   grid-template-columns: minmax(0, 640px) 1fr !important;
   align-items: center !important;
   gap: 5vw !important;
@@ -2199,7 +2199,7 @@ header {
   }
 
   .hero-grid {
-    padding: 132px 6vw 70px !important;
+    padding: 106px 6vw 70px !important;
     grid-template-columns: 1fr !important;
   }
 
