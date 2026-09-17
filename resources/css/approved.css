@@ -178,13 +178,13 @@ header.on-dark .header-cta:hover {
 
 .hero-grid {
   position: absolute;
-  z-index: 20;
+  z-index: 12 !important;
   inset: 0;
-  padding: 96px var(--content-x) 70px;
+  padding: 30px var(--gutter) 96px !important;
   display: grid;
-  grid-template-columns: minmax(0, 0.95fr) minmax(480px, 1.05fr);
-  gap: 4vw;
-  align-items: center;
+  grid-template-columns: minmax(0, 640px) 1fr !important;
+  gap: 5vw !important;
+  align-items: center !important;
 }
 
 .eyebrow {
