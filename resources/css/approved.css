@@ -1811,11 +1811,11 @@ header {
 }
 
 .hero-grid {
-  padding: 96px var(--gutter) 96px !important;
+  padding: 60px var(--gutter) 96px !important;
+  z-index: 12 !important;
   grid-template-columns: minmax(0, 640px) 1fr !important;
   align-items: center !important;
   gap: 5vw !important;
-  z-index: 12 !important;
 }
 
 .hero-grid>div:first-child {
@@ -1825,8 +1825,8 @@ header {
 
 .hero-grid h1 {
   max-width: 630px;
-  font-size: clamp(55px, 6.2vw, 96px) !important;
-  line-height: 0.94 !important;
+  font-size: clamp(35px, 4.2vw, 96px) !important;
+  line-height: .94 !important;
 }
 
 .hero-grid .lead {
@@ -1915,10 +1915,10 @@ header {
   text-align: left !important;
 }
 
-.process > .eyebrow,
-.process > .big,
-.insights > .eyebrow,
-.insights > .big {
+.process>.eyebrow,
+.process>.big,
+.insights>.eyebrow,
+.insights>.big {
   margin-left: 0 !important;
   margin-right: auto !important;
   text-align: left !important;
