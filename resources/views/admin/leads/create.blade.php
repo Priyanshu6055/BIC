@@ -102,25 +102,29 @@
         <h3 class="admin-form-section-title">3. Initial Action &amp; Follow-up</h3>
         <p class="admin-form-section-subtitle">Optional initial action item, target timeline, and current progress state.</p>
 
-        <div class="admin-form-grid" style="grid-template-columns: 2fr 1fr 1fr;">
-            <label>
-                <span>Action Description</span>
-                <input type="text" name="initial_action" placeholder="e.g. Schedule intro call / Request data room access" value="{{ old('initial_action') }}">
-            </label>
+        <div id="actions-container">
+            <div class="admin-form-grid action-row" style="grid-template-columns: 2fr 1fr 1fr auto; align-items: end; margin-bottom: 16px;">
+                <label>
+                    <span>Action Description</span>
+                    <input type="text" name="actions[]" placeholder="e.g. Schedule intro call / Request data room access">
+                </label>
 
-            <label>
-                <span>Timeline</span>
-                <input type="text" name="initial_timeline" placeholder="e.g. Sep 25, 2026" value="{{ old('initial_timeline') }}">
-            </label>
+                <label>
+                    <span>Timeline</span>
+                    <input type="text" name="timelines[]" placeholder="e.g. Sep 25, 2026">
+                </label>
 
-            <label>
-                <span>State</span>
-                <select name="initial_state">
-                    <option value="In Progress" @selected(old('initial_state', 'In Progress') === 'In Progress')>In Progress</option>
-                    <option value="Complete" @selected(old('initial_state') === 'Complete')>Complete</option>
-                </select>
-            </label>
+                <label>
+                    <span>State</span>
+                    <select name="states[]">
+                        <option value="In Progress">In Progress</option>
+                        <option value="Complete">Complete</option>
+                    </select>
+                </label>
+                <button type="button" class="admin-btn-clear remove-action-btn" style="color: #ef4444; margin-bottom: 8px; visibility: hidden;">Remove</button>
+            </div>
         </div>
+        <button type="button" id="add-action-btn" class="admin-btn-clear" style="margin-top: 8px;">+ Add another action</button>
     </div>
 
     <div class="admin-form-actions">
@@ -168,7 +172,7 @@
         if (selectedType === 'investor') {
             hint.textContent = 'Investor options: Corporate, MSME, Family Office, HNI';
         } else if (selectedType === 'startup') {
-            hint.textContent = 'Startup options: MSME Startup, Newway Startup';
+            hint.textContent = 'Startup options: MSME Startup, Startup';
         }
     }
 
@@ -177,6 +181,26 @@
         if (initialType) {
             handleTypeChange(initialType);
         }
+
+        const actionsContainer = document.getElementById('actions-container');
+        const addActionBtn = document.getElementById('add-action-btn');
+
+        addActionBtn.addEventListener('click', () => {
+            const row = actionsContainer.querySelector('.action-row').cloneNode(true);
+            row.querySelectorAll('input').forEach(input => input.value = '');
+            row.querySelector('select').value = 'In Progress';
+            row.querySelector('.remove-action-btn').style.visibility = 'visible';
+            actionsContainer.appendChild(row);
+        });
+
+        actionsContainer.addEventListener('click', (e) => {
+            if (e.target.classList.contains('remove-action-btn')) {
+                const rows = actionsContainer.querySelectorAll('.action-row');
+                if (rows.length > 1) {
+                    e.target.closest('.action-row').remove();
+                }
+            }
+        });
     });
 </script>
 @endpush

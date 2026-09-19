@@ -134,7 +134,7 @@ return [
         'steps' => [
             $step('Contact details', 'How BIC can respond.', [
                 $field('name', 'Name', required: true, extra: ['autoComplete'=>'name']),
-                $field('organisation', 'Organisation', extra: ['autoComplete'=>'organization']),
+                $field('organisation', 'Organisation', required: true, extra: ['autoComplete'=>'organization']),
                 $field('email', 'Email', 'email', true, ['autoComplete'=>'email']),
                 $field('mobile', 'Mobile', 'tel', true, ['autoComplete'=>'tel']),
             ]),

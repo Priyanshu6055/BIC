@@ -24,7 +24,7 @@ class Lead extends Model
         ],
         self::TYPE_STARTUP => [
             'msme_startup' => 'MSME Startup',
-            'newway_startup' => 'Newway Startup',
+            'newway_startup' => 'Startup',
         ],
     ];
 

@@ -55,7 +55,7 @@ class InquiryThankYouMail extends Mailable
             'msme' => 'MSME Equity Inquiry',
             'investor' => 'Investor Introduction',
             'ma' => 'M&A / Strategic Transaction Inquiry',
-            'contact' => 'Advisory Contact Message',
+            'contact' => 'Contact Message',
             default => ucfirst($this->inquiry->type) . ' Inquiry',
         };
     }

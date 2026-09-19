@@ -133,7 +133,7 @@ class InquiryController extends Controller
                 'confidentialSummary' => $text(1200),
             ],
             'contact' => [
-                'name' => $text(), 'organisation' => ['nullable', 'string', 'max:160'],
+                'name' => $text(), 'organisation' => $text(160),
                 'inquiryCategory' => ['required', Rule::in(['startup','msme','investor','ma','other'])],
                 'message' => $text(1200),
             ],

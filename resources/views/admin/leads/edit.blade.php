@@ -234,7 +234,7 @@
         if (selectedType === 'investor') {
             hint.textContent = 'Investor options: Corporate, MSME, Family Office, HNI';
         } else if (selectedType === 'startup') {
-            hint.textContent = 'Startup options: MSME Startup, Newway Startup';
+            hint.textContent = 'Startup options: MSME Startup, Startup';
         }
     }
 

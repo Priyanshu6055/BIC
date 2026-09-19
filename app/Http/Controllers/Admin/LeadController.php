@@ -66,9 +66,12 @@ class LeadController extends Controller
             'company' => ['nullable', 'string', 'max:255'],
             'information' => ['nullable', 'string'],
             'source' => ['nullable', 'string', 'max:255'],
-            'initial_action' => ['nullable', 'string', 'max:255'],
-            'initial_timeline' => ['nullable', 'string', 'max:255'],
-            'initial_state' => ['nullable', Rule::in([LeadAction::STATE_IN_PROGRESS, LeadAction::STATE_COMPLETE])],
+            'actions' => ['nullable', 'array'],
+            'actions.*' => ['nullable', 'string', 'max:255'],
+            'timelines' => ['nullable', 'array'],
+            'timelines.*' => ['nullable', 'string', 'max:255'],
+            'states' => ['nullable', 'array'],
+            'states.*' => ['required', Rule::in([LeadAction::STATE_IN_PROGRESS, LeadAction::STATE_COMPLETE])],
         ]);
 
         $lead = Lead::create([
@@ -82,12 +85,16 @@ class LeadController extends Controller
             'source' => $validated['source'] ?? null,
         ]);
 
-        if (! empty($validated['initial_action'])) {
-            $lead->actions()->create([
-                'action' => $validated['initial_action'],
-                'timeline' => $validated['initial_timeline'] ?? null,
-                'state' => $validated['initial_state'] ?: LeadAction::STATE_IN_PROGRESS,
-            ]);
+        if (! empty($validated['actions'])) {
+            foreach ($validated['actions'] as $index => $actionText) {
+                if (! empty($actionText)) {
+                    $lead->actions()->create([
+                        'action' => $actionText,
+                        'timeline' => $validated['timelines'][$index] ?? null,
+                        'state' => $validated['states'][$index] ?? LeadAction::STATE_IN_PROGRESS,
+                    ]);
+                }
+            }
         }
 
         return redirect()->route('admin.leads.index')->with('success', 'Lead created successfully.');

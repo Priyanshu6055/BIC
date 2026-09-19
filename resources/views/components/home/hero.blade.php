@@ -5,8 +5,7 @@
             <h1>The right capital.<br><em>The right relationships. The right next move.</em></h1>
             <p class="lead">Bridge India Capital helps traction-led startups and established MSMEs raise strategic capital, prepare for equity, and pursue M&amp;A—through a relationship-led network of HNIs, UHNIs, family offices, corporates and strategic investors.</p>
             <div class="actions"><a class="btn primary" href="#serve">Find your path</a><a class="btn" href="#why">See how BIC works</a></div>
-            <div class="definition-panel"><strong>In one line:</strong> BIC is the connecting infrastructure between businesses that are ready to grow and investors or strategic partners who can help them do it.</div>
-            <p class="hero-note">Every opportunity is assessed for fit, readiness and suitability. BIC does not guarantee funding, returns, introductions, transaction completion or liquidity.</p>
+
         </div></div>
         <div class="hero-photo-final" aria-hidden="true"></div>
         <canvas id="hero-canvas" aria-hidden="true"></canvas>
@@ -23,7 +22,7 @@
                 <g fill="rgba(255,255,255,.12)"><rect x="170" y="310" width="180" height="330"></rect><rect x="445" y="220" width="235" height="390"></rect><rect x="790" y="160" width="250" height="410"></rect><rect x="1120" y="250" width="210" height="350"></rect></g>
             </svg>
         </div></div>
-        <div class="portal-copy"><h2>Capital starts the conversation. Capability determines the outcome.</h2><p>The strongest transactions combine capital with the specific advantage a business needs next—market access, governance, credibility, follow-on capital or category relevance.</p></div>
+
         <div class="continue">Continue ↓</div>
     </div>
 </section>
