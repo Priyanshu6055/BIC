@@ -36,8 +36,10 @@ if (root) {
         heroGrid.style.transform = `translateY(${-52 * clamp(progress / 0.64, 0, 1)}px)`;
         canvas.style.opacity = String(1 - clamp((progress - 0.24) / 0.22, 0, 1));
         const copyProgress = clamp((progress - 0.53) / 0.27, 0, 1);
-        portalCopy.style.opacity = String(copyProgress);
-        portalCopy.style.transform = `translateY(${26 - 26 * copyProgress}px)`;
+        if (portalCopy) {
+            portalCopy.style.opacity = String(copyProgress);
+            portalCopy.style.transform = `translateY(${26 - 26 * copyProgress}px)`;
+        }
         continueLabel.style.opacity = String(clamp((progress - 0.72) / 0.17, 0, 1));
         header.classList.toggle('on-dark', progress > 0.36);
         const documentProgress = clamp(window.scrollY / Math.max(1, document.body.scrollHeight - window.innerHeight), 0, 1);
